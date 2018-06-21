@@ -1,5 +1,5 @@
 call runcrud.bat
-if "%ERRORLEVEL%" == "0" goto rename
+if "%ERRORLEVEL%" == "0" goto runmozilla
 echo.
 echo runcrud.bat has errors - breaking work
 goto fail
