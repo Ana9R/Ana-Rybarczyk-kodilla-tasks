@@ -2,15 +2,10 @@ package com.crud.tasks.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
-public class TrelloCardDto {
+public class TrelloCard {
     private String name;
     private String description;
     private String pos;
