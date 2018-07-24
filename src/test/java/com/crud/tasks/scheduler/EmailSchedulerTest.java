@@ -36,11 +36,11 @@ public class EmailSchedulerTest {
         when(taskRepository.count()).thenReturn(2L);
 
         //when
-        emailScheduler.sendInformationEmail();
+        emailScheduler.sendTasksCountInformationEmail();
 
         //then
         Mail mail = new Mail("test@mail.com", SUBJECT, "Currently in database you got: 2 tasks", null);
-        simpleEmailService.send(mail);
+        simpleEmailService.sendTrelloNotification(mail);
 
     }
 

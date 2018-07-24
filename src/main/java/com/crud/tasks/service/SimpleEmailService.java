@@ -23,7 +23,7 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    public void send(final Mail mail) {
+    public void sendTrelloNotification(final Mail mail) {
         LOGGER.info("Starting email preparation...");
         try {
             javaMailSender.send(createMimeMessage(mail));
@@ -33,24 +33,12 @@ public class SimpleEmailService {
         }
     }
 
-    private SimpleMailMessage createMailMesssage(final Mail mail) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
-        String toCc = mail.getToCc();
-        if(toCc != null && !toCc.isEmpty()){
-            mailMessage.setCc(toCc);
-        }
-        return mailMessage;
-    }
-
     private MimeMessagePreparator createMimeMessage(final Mail mail){
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmails(mail.getMessage()), true);
+            messageHelper.setText(mailCreatorService.buildTrelloEmailWithMessage(mail.getMessage()), true);
         };
     }
 

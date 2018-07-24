@@ -23,8 +23,8 @@ public class EmailScheduler {
 
     @Scheduled(cron = "0 0 10 * * *")
     //@Scheduled(fixedDelay = 10000)
-    public void sendInformationEmail() {
-        simpleEmailService.send(new Mail(
+    public void sendTasksCountInformationEmail() {
+        simpleEmailService.sendTrelloNotification(new Mail(
                 adminConfig.getAdminMail(),
                 SUBJECT,
                 createMessage(),
@@ -32,12 +32,12 @@ public class EmailScheduler {
 
     }
 
-    private String createMessage() {
+   private String createMessage() {
         long size = taskRepository.count();
         String message = "Currently in database you got: ";
         if (size == 1) {
-            return message + " task";
+            return message + size + " task";
         }
-        return message + " tasks";
+        return message + size + " tasks";
     }
 }
