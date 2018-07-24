@@ -62,7 +62,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDtoList(tasks)).thenReturn(taskDtos);
 
         // when & then
-        mockMvc.perform(get("/v1/task/getTasks").contentType(APPLICATION_JSON))
+        mockMvc.perform(get("/v1/tasks").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 // Trello board fields
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -82,8 +82,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
         // when & then
-        mockMvc.perform(get("/v1/task/getTask").contentType(APPLICATION_JSON).param("taskId", "1"))
-                .andExpect(status().isOk())
+        mockMvc.perform(get("/v1/tasks/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
                 // Trello board fields
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Title")))
@@ -94,13 +93,12 @@ public class TaskControllerTest {
     @Test
     public void shouldDeleteTask() throws Exception {
         //given
-        String taskId = "1";
         Task task = new Task(1L, "Title", "Content");
         Optional<Task> optionalTask = Optional.of(task);
         when(service.getTask(1L)).thenReturn(optionalTask);
 
         // when & then
-        mockMvc.perform(delete("/v1/task/deleteTask").contentType(APPLICATION_JSON).param("taskId", taskId))
+        mockMvc.perform(delete("/v1/tasks/1").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(service, times(1)).deleteTask(1L);
     }
@@ -122,7 +120,7 @@ public class TaskControllerTest {
         String jsonContent = gson.toJson(taskDto);
 
         // when & then
-        mockMvc.perform(put("/v1/task/updateTask").contentType(APPLICATION_JSON).content(jsonContent))
+        mockMvc.perform(put("/v1/tasks").contentType(APPLICATION_JSON).content(jsonContent))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Title33")))
@@ -146,7 +144,7 @@ public class TaskControllerTest {
         String jsonContent = gson.toJson(taskDto);
 
         // when & then
-        mockMvc.perform(post("/v1/task/createTask").contentType(APPLICATION_JSON).content(jsonContent))
+        mockMvc.perform(post("/v1/tasks").contentType(APPLICATION_JSON).content(jsonContent))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Title")))
